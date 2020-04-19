@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+final GlobalKey<NavigatorState> key = GlobalKey();
+final GlobalKey<NavigatorState> key2 = GlobalKey();
+
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -7,6 +10,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Code Sample for Nested Navigator',
+      navigatorKey: key,
       onGenerateRoute: _generateRoute,
     );
   }
@@ -37,7 +41,7 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('/second');
+        key.currentState.pushNamed('/second');
       },
       child: Container(
         color: Colors.white,
@@ -53,6 +57,7 @@ class SecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Navigator(
       initialRoute: "second/home",
+      key: key2,
       onGenerateRoute: (RouteSettings routeSettings) {
         WidgetBuilder builder;
         switch (routeSettings.name) {
@@ -74,7 +79,7 @@ class SecondHomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context).pushNamed('second/second');
+        key2.currentState.pushNamed('second/second');
       },
       child: Container(
         color: Colors.white,
@@ -90,7 +95,7 @@ class SecondSecondPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).pushNamed('/third');
+        key.currentState.pushNamed('/third');
       },
       child: Container(
         color: Colors.white,
