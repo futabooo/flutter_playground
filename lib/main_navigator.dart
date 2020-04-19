@@ -55,21 +55,26 @@ class HomePage extends StatelessWidget {
 class SecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Navigator(
-      initialRoute: "second/home",
-      key: key2,
-      onGenerateRoute: (RouteSettings routeSettings) {
-        WidgetBuilder builder;
-        switch (routeSettings.name) {
-          case "second/home":
-            builder = (BuildContext context) => SecondHomePage();
-            break;
-          case "second/second":
-            builder = (BuildContext context) => SecondSecondPage();
-            break;
-        }
-        return MaterialPageRoute(builder: builder, settings: routeSettings);
+    return WillPopScope(
+      onWillPop: () async {
+        return !await key2.currentState.maybePop();
       },
+      child: Navigator(
+        initialRoute: "second/home",
+        key: key2,
+        onGenerateRoute: (RouteSettings routeSettings) {
+          WidgetBuilder builder;
+          switch (routeSettings.name) {
+            case "second/home":
+              builder = (BuildContext context) => SecondHomePage();
+              break;
+            case "second/second":
+              builder = (BuildContext context) => SecondSecondPage();
+              break;
+          }
+          return MaterialPageRoute(builder: builder, settings: routeSettings);
+        },
+      ),
     );
   }
 }
